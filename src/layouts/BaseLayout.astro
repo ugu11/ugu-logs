@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "AI notes and projects." } = Astro.props;
+const pageTitle = title === "ugu-logs" ? title : `${title} · ugu-logs`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="ugu-logs" href={`${import.meta.env.BASE_URL}rss.xml`} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="site-title" href={import.meta.env.BASE_URL}>ugu-logs</a>
+        <nav class="site-nav">
+          <a href={import.meta.env.BASE_URL}>posts</a>
+          <a href={`${import.meta.env.BASE_URL}about/`}>about</a>
+          <a href={`${import.meta.env.BASE_URL}rss.xml`}>rss</a>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
+            <span class="icon-light">☀</span>
+            <span class="icon-dark">☾</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>&copy; {new Date().getFullYear()} Hugo Gomes — built with Astro, hosted on GitHub Pages.</p>
+      </div>
+    </footer>
+    <script is:inline>
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        var current = document.documentElement.getAttribute("data-theme");
+        var next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+    </script>
+  </body>
+</html>
