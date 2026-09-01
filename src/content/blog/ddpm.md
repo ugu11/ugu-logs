@@ -1,8 +1,8 @@
 ---
 title: "Denoising Diffusion Probabilistic Models (DDPM)"
-description: "What this blog is for, and what to expect."
+description: "How DDPMs generate images by learning to reverse a noising process, walking through the forward process, the reverse process, the training objective, and the sampling loop."
 date: 2026-08-25
-tags: ["Generative AI", "text-to-image generation", "diffusion models", "ddpm"]
+tags: ["Generative AI", "text-to-image generation", "diffusion models", "DDPM"]
 ---
 
 
@@ -71,7 +71,7 @@ q(\mathbf{x}_{0:T})
 \tag{5}
 $$
 
-Nothing in this equation is learned. The forward process is fixed in advance by the schedule $\beta_1, \ldots, \beta_T$, so we can use it freely as a noise-generating device during training. For any image and any timestep we already know exactly what the answer should be.
+Nothing in this equation is learned. The variances $\beta_t$ could in principle be learned by reparameterization, but Ho et al. deliberately fix them to constants, which leaves the whole forward process determined in advance by the schedule $\beta_1, \ldots, \beta_T$. We can therefore use it freely as a noise-generating device during training, since for any image and any timestep we already know exactly what the answer should be.
 
 ## The reverse process
 
@@ -98,7 +98,7 @@ $$
 
 ## Training
 
-The authors proposed training the model to maximize the log-likelihood of the training data $\log p_\theta(\mathbf{x}0)$, or equivalently, minimize the negative log-likelihood $-\log p\theta(\mathbf{x}0)$. This likelihood is intractable, so, as in VAEs, the model is trained on a variational lower bound of it instead. Because both the forward posterior and the reverse transitions are Gaussian, that bound decomposes into a sum of KL divergences between Gaussians, one per timestep, which have a closed form. Rewriting the mean $\mu_\theta$ in terms of the noise through Equation 3, and dropping the weighting coefficients that each term carries, Ho et al. arrive at the simplified objective in Equation 8, which yields an $\boldsymbol{\epsilon}$-prediction neural network $\boldsymbol{\epsilon}_\theta$ that predicts the noise $\boldsymbol{\epsilon}$ added to the original image $\mathbf{x}_0$.
+The authors proposed training the model to maximize the log-likelihood of the training data $\log p_\theta(\mathbf{x}_0)$, or equivalently, minimize the negative log-likelihood $-\log p_\theta(\mathbf{x}_0)$. Neither is tractable, so, as in VAEs, the model is trained on a variational bound instead: a lower bound on the log-likelihood, which is the same thing as an upper bound on the negative log-likelihood we are minimizing. Because both the forward posterior and the reverse transitions are Gaussian, that bound decomposes into a sum of KL divergences between Gaussians, one per timestep, which have a closed form. Rewriting the mean $\mu_\theta$ in terms of the noise through Equation 3, and dropping the weighting coefficients that each term carries, Ho et al. arrive at the simplified objective in Equation 8, which yields an $\boldsymbol{\epsilon}$-prediction neural network $\boldsymbol{\epsilon}_\theta$ that predicts the noise $\boldsymbol{\epsilon}$ added to the original image $\mathbf{x}_0$.
 
 $$
 L_{\mathrm{simple}}(\theta)

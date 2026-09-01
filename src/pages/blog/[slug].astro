@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { url } from "../../lib/url";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -16,7 +17,7 @@ const { Content } = await render(post);
 
 <BaseLayout title={post.data.title} description={post.data.description}>
   <p class="post-nav-back">
-    <a href={import.meta.env.BASE_URL}>&larr; all posts</a>
+    <a href={url()}>&larr; all posts</a>
   </p>
   <article>
     <header class="post-header">

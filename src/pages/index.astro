@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { url } from "../lib/url";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
@@ -18,7 +19,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
             <span class="post-date">
               {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
             </span>
-            <a class="post-title" href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
+            <a class="post-title" href={url(`blog/${post.id}/`)}>
               {post.data.title}
             </a>
             <p class="post-description">{post.data.description}</p>

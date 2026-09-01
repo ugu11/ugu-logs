@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import "katex/dist/katex.min.css";
+import { url } from "../lib/url";
 
 interface Props {
   title: string;
@@ -25,17 +26,17 @@ const pageTitle = title === "ugu-logs" ? title : `${title} · ugu-logs`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title="ugu-logs" href={`${import.meta.env.BASE_URL}rss.xml`} />
+    <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="ugu-logs" href={url("rss.xml")} />
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
-        <a class="site-title" href={import.meta.env.BASE_URL}>ugu-logs</a>
+        <a class="site-title" href={url()}>ugu-logs</a>
         <nav class="site-nav">
-          <a href={import.meta.env.BASE_URL}>posts</a>
-          <a href={`${import.meta.env.BASE_URL}about/`}>about</a>
-          <a href={`${import.meta.env.BASE_URL}rss.xml`}>rss</a>
+          <a href={url()}>posts</a>
+          <a href={url("about/")}>about</a>
+          <a href={url("rss.xml")}>rss</a>
           <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
             <span class="icon-light">☀</span>
             <span class="icon-dark">☾</span>
